@@ -4,7 +4,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const dns = require('node:dns');
-
 app.use(cors());
 app.use(express.json());
 app.use('/public', express.static(`${process.cwd()}/public`));
@@ -26,16 +25,16 @@ app.post("/api/shorturl", function (req, res) {
     return res.json({ error: "No URL provided" });
   }
 
-  let parsedUrl;
+  let urlAsString;
   try {
-    parsedUrl = new URL(url);
+    urlAsString = new URL(url);  
   } catch (error) {
     return res.json({ error: "invalid url" });
   }
 
-  dns.lookup(parsedUrl.hostname, (err) => {
+  dns.lookup(urlAsString.hostname, (err) => {
     if (err) {
-      return res.json({ error: "dns: invalid url" });
+      return res.json({ error: "invalid url" });
     }
 
     for (const key in urlDatabase) {
