@@ -14,6 +14,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+const users = [];
+
 app.post('/api/users', (req, res, next) => {
   const { username } = req.body ?? {}
 
@@ -24,15 +26,16 @@ app.post('/api/users', (req, res, next) => {
   const id = new ObjectId().toHexString();
   console.log("🚀 ~ app.post ~ ObjectId:", id)
 
-  res.json({
-    username: username,
-    _id: id
-  })
+  const newUser = { username, _id: id };
+  users.push(newUser);
 
+  res.json(newUser);
   next()
 })
 
-
+app.get('/api/users', (req, res) => {
+  res.json(users);
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
