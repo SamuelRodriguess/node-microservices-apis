@@ -24,7 +24,6 @@ app.post('/api/users', (req, res, next) => {
   }
 
   const id = new ObjectId().toHexString();
-  console.log("🚀 ~ app.post ~ ObjectId:", id)
 
   const newUser = { username, _id: id };
   users.push(newUser);
@@ -36,6 +35,40 @@ app.post('/api/users', (req, res, next) => {
 app.get('/api/users', (req, res) => {
   res.json(users);
 });
+
+app.post('/api/users/:_id/exercises', (req, res) => {
+  const { description, duration, date } = req.body ?? {}
+  const userId = req.params._id;
+
+  let dateObj;
+  if (!date) {
+    dateObj = new Date();
+  } else {
+    dateObj = new Date(date);
+    if (isNaN(dateObj)) {
+      return res.status(400).json({ error: 'Invalid date format' });
+    }
+  }
+  const user = users.find(elem => elem._id === userId);
+  
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const exercise = {
+    description,
+    duration: Number(duration),
+    date: dateObj
+  };
+
+  return res.json({
+    _id: user._id,
+    username: user.username,
+    date: exercise.date,
+    duration: exercise.duration,
+    description: exercise.description
+  });
+})
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
