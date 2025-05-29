@@ -2,8 +2,7 @@
 
 This is a simple microservice that parses the request headers sent by the client and returns useful information such as IP address, preferred language, and software details.
 
-## Features
-
+**Key Features:**  
 - Parses the client's IP address  
 - Detects the preferred language from the `Accept-Language` header  
 - Extracts software information from the `User-Agent` header  
@@ -36,6 +35,17 @@ A microservice that provides URL shortening functionality. Users can submit a lo
 - RESTful API endpoints for URL creation and access  
 
 ---
+
+# File Upload Middleware
+
+This project now includes middleware for handling file uploads using the Multer package. This middleware enables receiving multiple files sent by the client, processing them, and making them available in the application routes.
+
+**Key Features:**  
+- Supports uploading multiple files (up to 12 per request)
+- Validates that files are actually uploaded
+- Temporarily stores files in a configured folder (./public/data/uploads/)
+- Extracts important file information such as original name, MIME type, and size
+- Simple integration with Express routes
 
 ## Technologies Used
 
